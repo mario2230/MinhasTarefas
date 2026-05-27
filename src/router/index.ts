@@ -76,7 +76,7 @@ router.beforeEach(
       !nome
     ) {
       next('/tabs/home')
-      alert("Necessário colocar um nome, para ser considerado um usuario!")
+      alert("Necessário colocar um nome, para ser considerado um user!")
     } else {
       next()
     }
