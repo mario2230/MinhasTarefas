@@ -17,8 +17,7 @@ import {
   IonInput,
   IonButton,
   IonIcon,
-  useIonRouter,
-  alertController
+  useIonRouter
 } from '@ionic/vue'
 
 import { addOutline } from 'ionicons/icons'
