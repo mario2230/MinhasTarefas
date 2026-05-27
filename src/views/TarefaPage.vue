@@ -5,20 +5,44 @@ import { useTarefas } from '@/composable/useTarefas'
 import CardTarefa from '@/components/CardTarefa.vue'
 
 import {
-  IonCard, IonCardContent, IonCardHeader, IonCardTitle,
-  IonContent, IonHeader, IonPage, IonTitle, IonToolbar,
-  IonInput, IonButton, IonIcon
+  IonCard,
+  IonCardContent,
+  IonCardHeader,
+  IonCardTitle,
+  IonContent,
+  IonHeader,
+  IonPage,
+  IonTitle,
+  IonToolbar,
+  IonInput,
+  IonButton,
+  IonIcon,
+  useIonRouter,
+  alertController
 } from '@ionic/vue'
 
 import { addOutline } from 'ionicons/icons'
 
-const {  filtradas, 
- adicionar, remover, concluir } = useTarefas() 
+const ionRouter = useIonRouter()
+
+const {
+  filtradas,
+  adicionar,
+  concluir
+} = useTarefas()
+
+
+
+
 const novaTarefa = ref('')
 
 function adicionarNova() {
   adicionar(novaTarefa.value)
   novaTarefa.value = ''
+}
+
+function abrirDetalhe(id: number) {
+  ionRouter.push(`/tabs/tarefas/${id}`)
 }
 </script>
 
@@ -32,10 +56,11 @@ function adicionarNova() {
 
     <ion-content>
 
-      <!-- NOVA TAREFA -->
       <ion-card>
         <ion-card-header>
-          <ion-card-title>Nova Tarefa</ion-card-title>
+          <ion-card-title>
+            Nova Tarefa
+          </ion-card-title>
         </ion-card-header>
 
         <ion-card-content>
@@ -46,13 +71,18 @@ function adicionarNova() {
             placeholder="Ex: Estudar Vue.js"
           />
 
-          <ion-button expand="block" @click="adicionarNova">
-            <ion-icon slot="start" :icon="addOutline" />
+          <ion-button
+            expand="block"
+            @click="adicionarNova"
+          >
+            <ion-icon
+              slot="start"
+              :icon="addOutline"
+            />
             Adicionar tarefa
           </ion-button>
         </ion-card-content>
       </ion-card>
-
 
       <ion-card>
         <ion-card-header>
@@ -63,22 +93,27 @@ function adicionarNova() {
 
         <ion-card-content>
 
-          <CardTarefa
+          <div
             v-for="tarefa in filtradas"
             :key="tarefa.id"
-            :tarefa="tarefa"
-            @remover="remover"
-            @concluir="concluir"
-          />
+            @click="abrirDetalhe(tarefa.id)"
+          >
+            <CardTarefa
+              :tarefa="tarefa"
+  
+              @concluir="concluir"
+            />
+          </div>
 
-          <p v-if="filtradas.length === 0" class="ion-text-center ion-padding">
+          <p
+            v-if="filtradas.length === 0"
+            class="ion-text-center ion-padding"
+          >
             Nenhuma tarefa cadastrada.
           </p>
 
         </ion-card-content>
       </ion-card>
-
-   
 
     </ion-content>
   </ion-page>
@@ -87,5 +122,9 @@ function adicionarNova() {
 <style scoped>
 ion-card {
   margin: 16px;
+}
+
+div {
+  cursor: pointer;
 }
 </style>

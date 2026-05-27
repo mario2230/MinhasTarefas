@@ -1,54 +1,93 @@
+<script setup lang="ts">
+import { ref, onMounted } from 'vue'
+
+import {
+  IonPage,
+  IonHeader,
+  IonToolbar,
+  IonTitle,
+  IonContent,
+  IonCard,
+  IonCardHeader,
+  IonCardTitle,
+  IonCardContent,
+  IonInput,
+  IonButton,
+  IonText
+} from '@ionic/vue'
+
+const nome = ref('')
+
+onMounted(() => {
+  nome.value =
+    localStorage.getItem(
+      'nomeUsuario'
+    ) || ''
+})
+
+function salvarNome() {
+  if (!nome.value.trim()) {
+    alert('Digite um nome')
+    return
+  }
+
+  localStorage.setItem(
+    'nomeUsuario',
+    nome.value
+  )
+
+  alert('Nome salvo!')
+}
+</script>
+
 <template>
   <ion-page>
-    <ion-header :translucent="true">
+    <ion-header>
       <ion-toolbar>
-        <ion-title>Seu Aplicativo</ion-title>
+        <ion-title>
+          Home
+        </ion-title>
       </ion-toolbar>
     </ion-header>
 
-    <ion-content :fullscreen="true">
-      <ion-header collapse="condense">
-      </ion-header>
+    <ion-content class="ion-padding">
 
-      <div><p>Este aplicativo serve para ser sua agenda pessoal! no botão abaixo você pode utilizar nosso sistema! </p></div>
+      <ion-card>
 
+        <ion-card-header>
+          <ion-card-title>
+            Bem-vindo
+          </ion-card-title>
+        </ion-card-header>
+
+        <ion-card-content>
+
+          <ion-text>
+            <p>
+              Informe seu nome para
+              acessar o perfil. ( Caso ele esteja vazio não é possível acessar o perfil )
+            </p>
+          </ion-text>
+
+          <ion-input
+            v-model="nome"
+            label="Seu nome"
+            label-placement="floating"
+            placeholder="Digite seu nome"
+          />
+
+          <ion-button
+            expand="block"
+            class="ion-margin-top"
+            @click="salvarNome"
+          >
+            Salvar nome
+          </ion-button>
+
+        </ion-card-content>
+
+      </ion-card>
 
     </ion-content>
   </ion-page>
 </template>
-
-<script setup lang="ts">
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/vue';
-
-
-</script>
-
-<style scoped>
-#container {
-  text-align: center;
-  
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
-}
-
-#container strong {
-  font-size: 20px;
-  line-height: 26px;
-}
-
-#container p {
-  font-size: 16px;
-  line-height: 22px;
-  
-  color: #8c8c8c;
-  
-  margin: 0;
-}
-
-#container a {
-  text-decoration: none;
-}
-</style>

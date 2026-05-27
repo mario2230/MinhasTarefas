@@ -1,35 +1,114 @@
-<script setup lang='ts'>
+<script setup lang="ts">
 import {
   IonCard,
   IonCardContent,
-  IonItem,
+  IonButton,
   IonIcon,
-  IonLabel,
-  IonButton
+  IonText
 } from '@ionic/vue'
-import { checkmarkCircle, ellipseOutline, trashOutline } from 'ionicons/icons'
-interface Tarefa { id: number; texto: string; feita: boolean }
 
-const props = defineProps<{ tarefa: Tarefa }>()
-const emit = defineEmits<{
-    remover: [id: number]
-    concluir: [id: number]
-}>() 
+import {
+  checkmarkDoneOutline
+} from 'ionicons/icons'
+
+interface Tarefa {
+  id: number
+  texto: string
+  feita: boolean
+}
+
+defineProps<{
+  tarefa: Tarefa
+}>()
+
+const emit = defineEmits([
+  'remover',
+  'concluir'
+])
 </script>
 
 <template>
-    <IonCard>
-        <IonCardContent>
-            <IonItem lines='none'>
-                <IonIcon slot='start' :icon='props.tarefa.feita ? checkmarkCircle : ellipseOutline'
-                    :color='props.tarefa.feita ? "success" : "medium"' @click='emit("concluir", props.tarefa.id)' />
-                <IonLabel :style='props.tarefa.feita ? "text-decoration: line-through" : ""'>
-                    {{ props.tarefa.texto }}
-                </IonLabel>
-                <IonButton slot='end' fill='clear' color='danger' @click='emit("remover", props.tarefa.id)'>
-                    <IonIcon :icon='trashOutline' />
-                </IonButton>
-            </IonItem>
-        </IonCardContent>
-    </IonCard>
+  <ion-card class="card-tarefa">
+
+    <ion-card-content class="conteudo">
+
+  
+      <div class="info">
+        <ion-text>
+          <h2
+            :class="{
+              concluida: tarefa.feita
+            }"
+          >
+            {{ tarefa.texto }}
+          </h2>
+        </ion-text>
+
+        <p>
+          Status:
+          <strong>
+            {{
+              tarefa.feita
+                ? 'Concluída'
+                : 'Pendente'
+            }}
+          </strong>
+        </p>
+      </div>
+
+  
+      <div class="acoes">
+
+
+        <ion-button
+          fill="clear"
+          color="success"
+          @click.stop="
+            emit(
+              'concluir',
+              tarefa.id
+            )
+          "
+        >
+          <ion-icon
+            :icon="
+              checkmarkDoneOutline
+            "
+          />
+        </ion-button>
+
+
+
+
+      </div>
+
+    </ion-card-content>
+
+  </ion-card>
 </template>
+
+<style scoped>
+.card-tarefa {
+  margin-bottom: 12px;
+}
+
+.conteudo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.info {
+  flex: 1;
+}
+
+.acoes {
+  display: flex;
+  gap: 8px;
+}
+
+.concluida {
+  text-decoration: line-through;
+  opacity: 0.7;
+}
+</style>
