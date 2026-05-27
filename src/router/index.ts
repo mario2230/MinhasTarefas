@@ -75,7 +75,8 @@ router.beforeEach(
       to.meta.requerNome &&
       !nome
     ) {
-      next('/tabs/tarefas')
+      next('/tabs/home')
+      alert("Necessário colocar um nome, para ser considerado um user!")
     } else {
       next()
     }
